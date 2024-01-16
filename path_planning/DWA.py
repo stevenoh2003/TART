@@ -6,19 +6,6 @@ import numpy as np
 
 show_animation = True
 
-
-def draw_polygon_from_points(points, color='k'):
-    """
-    Draw a polygon by plotting lines between a series of points.
-    The points should be in order and form a closed loop.
-    """
-    # Ensure the polygon is closed by connecting the last and first points
-    if points[0] != points[-1]:
-        points.append(points[0])
-
-    xs, ys = zip(*points)  # creates two lists of x and y values
-    plt.plot(xs, ys, color)
-
 def obstacle_particles(x, y, w, l):
     D = 10
     top = [[i, y + l/2] for i in np.linspace(x-w/2, x+w/2, D)]
@@ -33,28 +20,24 @@ def boundary(w, l):
 
     y_bottom = -5
 
-    top = [[i, l] for i in np.linspace(-w/2, w/2, D)]
-    bottom = [[i, y_bottom] for i in np.linspace(-w/2, w/2, D)]
-    left = [[-w/2, i] for i in np.linspace(y_bottom, l, D)]
-    right = [[w/2, i] for i in np.linspace(y_bottom, l, D)]
+    top = [[i, l/2] for i in np.linspace(-w/2, w/2, D)]
+    bottom = [[i, -l/2] for i in np.linspace(-w/2, w/2, D)]
+    left = [[-w/2, i] for i in np.linspace(-l/2, l/2, D)]
+    right = [[w/2, i] for i in np.linspace(-l/2, l/2, D)]
 
     return top + bottom + left + right
-
-
 
 def create_map(positions, w, l):
     m = []
     for x, y in positions:
         m += obstacle_particles(x, y, w, l)
 
-    b = boundary(20, 24)
+    b = boundary(2.4, 2.4)
 
     return m + b
 
 def dwa_control(x, config, goal, ob):
-    """
-    Dynamic Window Approach control
-    """
+
     dw = calc_dynamic_window(x, config)
 
     u, trajectory = calc_control_and_trajectory(x, dw, config, goal, ob)
@@ -67,10 +50,9 @@ class RobotType(Enum):
     rectangle = 1
 
 
+
+
 class Config:
-    """
-    simulation parameter class
-    """
 
     def __init__(self):
         # robot parameter
@@ -91,13 +73,15 @@ class Config:
 
         # if robot_type == RobotType.circle
         # Also used to check if goal is reached in both types
-        self.robot_radius = 1.0  # [m] for collision check
+        self.robot_radius = 0.15  # [m] for collision check
 
         # if robot_type == RobotType.rectangle
-        self.robot_width = 0.5  # [m] for collision check
-        self.robot_length = 1.2  # [m] for collision check
+        self.robot_width = 0.2  # [m] for collision check
+        self.robot_length = 0.2  # [m] for collision check
         # obstacles [x(m) y(m), ....]
-        self.ob = np.array(create_map([[-4.5, 5], [-4.5, 15], [4.5, 15], [4.5, 5]], 3, 6))
+
+        space_y = 0.5
+        self.ob = np.array(create_map([[-0.35, 0.35], [-0.35, -0.35], [0.35, 0.35], [0.35, -0.35]], 0.2, 0.2))
         
     
     @property
@@ -114,9 +98,6 @@ class Config:
 config = Config()
 
 def motion(x, u, dt):
-    """
-    motion model
-    """
 
     x[2] += u[1] * dt
     x[0] += u[0] * math.cos(x[2]) * dt
@@ -128,9 +109,6 @@ def motion(x, u, dt):
 
 
 def calc_dynamic_window(x, config):
-    """
-    calculation dynamic window based on current state x
-    """
 
     # Dynamic window from robot specification
     Vs = [config.min_speed, config.max_speed,
@@ -150,9 +128,7 @@ def calc_dynamic_window(x, config):
 
 
 def predict_trajectory(x_init, v, y, config):
-    """
-    predict trajectory with an input
-    """
+
 
     x = np.array(x_init)
     trajectory = np.array(x)
@@ -166,9 +142,6 @@ def predict_trajectory(x_init, v, y, config):
 
 
 def calc_control_and_trajectory(x, dw, config, goal, ob):
-    """
-    calculation final input with dynamic window
-    """
 
     x_init = x[:]
     min_cost = float("inf")
@@ -232,13 +205,10 @@ def calc_obstacle_cost(trajectory, ob, config):
             return float("Inf")
 
     min_r = np.min(r)
-    return 1.0 / min_r  # OK
+    return 1.0 / min_r  
 
 
 def calc_to_goal_cost(trajectory, goal):
-    """
-        calc to goal cost with angle difference
-    """
 
     dx = goal[0] - trajectory[-1, 0]
     dy = goal[1] - trajectory[-1, 1]
@@ -278,10 +248,10 @@ def plot_robot(x, y, yaw, config):  # pragma: no cover
         plt.plot([x, out_x], [y, out_y], "-k")
 
 
-def main(gx=-7.0, gy=10.0, robot_type=RobotType.circle):
+def main(gx=0.2, gy=1.0, robot_type=RobotType.circle):
     print(__file__ + " start!!")
     # initial state [x(m), y(m), yaw(rad), v(m/s), omega(rad/s)]
-    x = np.array([0.0, 0.0, math.pi / 8.0, 0.0, 0.0])
+    x = np.array([0.0, -1, math.pi / 8.0, 0.0, 0.0])
     # goal position [x(m), y(m)]
     goal = np.array([gx, gy])
 
@@ -311,6 +281,8 @@ def main(gx=-7.0, gy=10.0, robot_type=RobotType.circle):
             plot_robot(x[0], x[1], x[2], config)
             plot_arrow(x[0], x[1], x[2])
             plt.axis("equal")
+            plt.xlim(-2, 2)
+            plt.ylim(-2, 2)
             plt.grid(True)
             plt.pause(0.0001)
 
@@ -328,7 +300,6 @@ def main(gx=-7.0, gy=10.0, robot_type=RobotType.circle):
 
 
 if __name__ == '__main__':
-
 
     # obstacle_particles(-4.5, 5, 3, 6)
     main(robot_type=RobotType.rectangle)
