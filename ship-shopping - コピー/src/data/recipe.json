@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Curry",
+        "id": "17",
+        "ingredients": ["5", "10", "13"],
+        "imgUrl": "/recipe-imgs/Curry.jpg",
+        "price": 28
+    },
+    {
+        "name": "Blueberry Pie",
+        "id": "18",
+        "ingredients": ["14", "15", "16"],
+        "imgUrl": "/recipe-imgs/BlueberryPie.jpg",
+        "price": 45
+    },
+    {
+        "name": "Hamburger",
+        "id": "19",
+        "ingredients": ["6", "10", "11"],
+        "imgUrl": "/recipe-imgs/Hamburger.jpg",
+        "price": 45
+    },
+    {
+        "name": "Salad",
+        "id": "20",
+        "ingredients": ["11", "12"],
+        "imgUrl": "/recipe-imgs/Salad.jpg",
+        "price": 45
+    }
+]

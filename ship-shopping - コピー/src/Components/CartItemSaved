@@ -1,0 +1,181 @@
+
+import { useShoppingCart } from "../context/ShoppingCartContext";
+import data from "../data/items.json";
+import group from "../data/recipe.json";
+import { Button, Stack } from "react-bootstrap";
+import { formatCurrency } from "../utilities/formatCurrency";
+import React, { useState, useEffect } from "react";
+
+export function CartItem({id, quantity}) {
+    const { removeFromCart } = useShoppingCart();
+
+    const item = data.find(i => i.id === id);
+    const recipeitem = group.find(j => j.id === id);
+
+    /*
+    const lookup = {};
+    data.forEach((item, index) => {
+        lookup[item.id] = index;
+    });
+    */
+
+    const [ingredientIds, setIngredientIds] = useState([]);
+    
+    useEffect(() => {
+        if (recipeitem) {
+            let ids;
+            switch (recipeitem.name){
+                case "Curry":
+                    ids = [5, 10, 13];
+                    break;
+                case "Blueberry Pie":
+                    ids = [14, 15, 16];
+                    break;
+                case "Hamburger":
+                    ids = [6, 10, 11];
+                    break;
+                case "Salad":
+                    ids = [11, 12];
+                    break;
+                default:
+                    ids = [];
+            }
+            setIngredientIds(ids);
+        } 
+    }, [recipeitem]);
+
+    const renderContent= () => {
+        if (item != null) {
+            return (
+                <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
+                    <img src={item.imgUrl} style={{ width: "125px", height: "75px", objectFit: "cover" }} />
+                    <div>
+                        <div>
+                            {item.name}{quantity > 1 && <span className="text-muted" style={{ fontSize: "0.65rem" }}>x{quantity}</span>}
+                        </div>
+                        <div className="text-muted" style={{ fontSize: "0.75rem" }}>
+                            {formatCurrency(item.price)}
+                        </div>
+                    </div>
+                    <div>
+                        {formatCurrency(item.price * quantity)}
+                        <Button variant="outline-danger" size="sm" onClick={() => removeFromCart(item.id)}>×</Button>
+                    </div>
+                </Stack>
+            );
+        } else if (recipeitem != null) {
+            if (recipeitem.name == "Curry") {
+                const ids=[5, 10, 13]
+                return (
+                    <div>
+                        {ids.map((id) => { 
+                            const item = data.find(i => i.id === id);
+                            console.log("id of ingredient inside", id);
+                            return(                          
+                                <Stack key={id} direction="horizontal" gap={2} className="d-flex align-items-center">
+                                    <img src={item.imgUrl} style={{ width: "125px", height: "75px", objectFit: "cover" }} />
+                                    <div>
+                                        {item.name}{quantity > 1 && <span className="text-muted" style={{ fontSize: "0.65rem" }}>x{quantity}</span>}
+                                    </div>
+                                    <div className="text-muted" style={{ fontSize: "0.75rem" }}>
+                                        {formatCurrency(item.price)}
+                                    </div>
+                                    <div>
+                                        {formatCurrency(item.price * quantity)}
+                                        <Button variant="outline-danger" size="sm" onClick={() => removeFromCart(item.id)}>×</Button>
+                                    </div>
+                                </Stack>                                
+                            );
+                        })}
+                    </div>
+                );
+            } else if (recipeitem.name == "Blueberry Pie"){
+                const ids=[14, 15, 16]
+                return (
+                    <div>
+                        {ids.map((id) => { 
+                            const item = data.find(i => i.id === id);
+                            return(                          
+                                <Stack key={id} direction="horizontal" gap={2} className="d-flex align-items-center">
+                                    <img src={item.imgUrl} style={{ width: "125px", height: "75px", objectFit: "cover" }} />
+                                    <div>
+                                        {item.name}{quantity > 1 && <span className="text-muted" style={{ fontSize: "0.65rem" }}>x{quantity}</span>}
+                                    </div>
+                                    <div className="text-muted" style={{ fontSize: "0.75rem" }}>
+                                        {formatCurrency(item.price)}
+                                    </div>
+                                    <div>
+                                        {formatCurrency(item.price * quantity)}
+                                        <Button variant="outline-danger" size="sm" onClick={() => removeFromCart(item.id)}>×</Button>
+                                    </div>
+                                </Stack>
+                            );
+                        })}
+                    </div>
+                );
+            } else if (recipeitem.name == "Hamburger"){
+                const ids=[6, 10, 11]
+                return (
+                    <div>
+                        {ids.map((id) => {
+                            const item = data.find(i => i.id === id);
+                            return(
+                                <Stack key={id} direction="horizontal" gap={2} className="d-flex align-items-center">
+                                    <img src={item.imgUrl} style={{ width: "125px", height: "75px", objectFit: "cover" }} />
+                                    <div>
+                                        {item.name}{quantity > 1 && <span className="text-muted" style={{ fontSize: "0.65rem" }}>x{quantity}</span>}
+                                    </div>
+                                    <div className="text-muted" style={{ fontSize: "0.75rem" }}>
+                                        {formatCurrency(item.price)}
+                                    </div>
+                                    <div>
+                                        {formatCurrency(item.price * quantity)}
+                                        <Button variant="outline-danger" size="sm" onClick={() => removeFromCart(item.id)}>×</Button>
+                                    </div>
+                                </Stack>
+                            );
+                        })}
+                    </div>
+                );
+            } else if (recipeitem.name == "Salad") {
+                const ids=[11, 12]
+                return (
+                    <div>
+                        {ids.map((id) => {
+                            const item = data.find(i => i.id === id);
+                            return (
+                                <Stack key={id} direction="horizontal" gap={2} className="d-flex align-items-center">
+                                    <img src={item.imgUrl } style={{ width: "125px", height: "75px", objectFit: "cover" }} />
+                                    <div>
+                                        {item.name}{quantity > 1 && <span className="text-muted" style={{ fontSize: "0.65rem" }}>x{quantity}</span>}
+                                    </div>
+                                    <div className="text-muted" style={{ fontSize: "0.75rem" }}>
+                                        {formatCurrency(item.price)}
+                                    </div>
+                                    <div>
+                                        {formatCurrency(item.price * quantity)}
+                                        <Button variant="outline-danger" size="sm" onClick={() => removeFromCart(item.id)}>×</Button>
+                                    </div>
+                                </Stack>
+                            );
+                        })}
+                    </div>
+                );
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    };
+
+    console.log("Item outside map:", item);
+    console.log("Recipe Item outside map:", recipeitem);
+    console.log("id of ingredient outside", id);
+
+    return(
+        <div>
+            {renderContent()}
+        </div>
+    );
+}

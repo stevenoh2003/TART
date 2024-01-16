@@ -1,0 +1,146 @@
+[
+    {
+        "expiration_date": "2026-12-31",
+        "id": 1,
+        "location": [1,1],
+        "name": "Soy Sauce",
+        "category": "Seasoning",
+        "imgUrl": "/imgs/SoySauce.jpg",
+        "price": 1
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 2,
+        "location": [1,1],
+        "name": "Vinegar",
+        "category": "Seasoning",
+        "imgUrl": "/imgs/Vinegar.jpg",
+        "price": 2
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 3,
+        "location": [1,1],
+        "name": "Ketchup",
+        "category": "Seasoning",
+        "imgUrl": "/imgs/Ketchup.jpg",
+        "price": 3
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 4,
+        "location": [1,1],
+        "name": "Chicken",
+        "category": "Meat",
+        "imgUrl": "/imgs/Chicken.jpg",
+        "price": 4
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 5,
+        "location": [1,1],
+        "name": "Pork",
+        "category": "Meat",
+        "imgUrl": "/imgs/Pork.jpg",
+        "price": 5
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 6,
+        "location": [1,1],
+        "name": "Beef",
+        "category": "Meat",
+        "imgUrl": "/imgs/Beef.jpg",
+        "price": 6
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 7,
+        "location": [1,1],
+        "name": "Scallops",
+        "category": "Seafood",
+        "imgUrl": "/imgs/Scallops.jpg",
+        "price": 7
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 8,
+        "location": [1,1],
+        "name": "Shrimp",
+        "category": "Seafood",
+        "imgUrl": "/imgs/Shrimp.jpg",
+        "price": 8
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 9,
+        "location": [1,1],
+        "name": "Squid",
+        "category": "Seafood",
+        "imgUrl": "/imgs/Squid.jpg",
+        "price": 9
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 10,
+        "location": [1,1],
+        "name": "Onion",
+        "category": "Vegetable",
+        "imgUrl": "/imgs/Onion.jpg",
+        "price": 10
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 11,
+        "location": [1,1],
+        "name": "Tomato",
+        "category": "Vegetable",
+        "imgUrl": "/imgs/Tomato.jpg",
+        "price": 11
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 12,
+        "location": [1,1],
+        "name": "Cabbage",
+        "category": "Vegetable",
+        "imgUrl": "/imgs/Cabbage.jpg",
+        "price": 12
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 13,
+        "location": [1,1],
+        "name": "Carrot",
+        "category": "Vegetable",
+        "imgUrl": "/imgs/Carrot.jpg",
+        "price": 13
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 14,
+        "location": [1,1],
+        "name": "Blueberry",
+        "category": "Fruit",
+        "imgUrl": "/imgs/Blueberry.jpg",
+        "price": 14
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 15,
+        "location": [1,1],
+        "name": "Apple",
+        "category": "Fruit",
+        "imgUrl": "/imgs/Apple.jpg",
+        "price": 15
+    },
+    {
+        "expiration_date": "2026-12-31",
+        "id": 16,
+        "location": [1,1],
+        "name": "Orange",
+        "category": "Fruit",
+        "imgUrl": "/imgs/Orange.jpg",
+        "price": 16
+    }
+]
