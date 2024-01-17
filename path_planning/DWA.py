@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 show_animation = True
+DT = 0.2
 
 def obstacle_particles(x, y, w, l):
-    D = 10
+    D = 3
     top = [[i, y + l/2] for i in np.linspace(x-w/2, x+w/2, D)]
     bottom = [[i, y - l/2] for i in np.linspace(x-w/2, x+w/2, D)]
     left = [[x - w/2, i] for i in np.linspace(y-l/2, y+l/2, D)]
@@ -16,7 +17,7 @@ def obstacle_particles(x, y, w, l):
     return top + bottom + left + right
 
 def boundary(w, l):
-    D = 20
+    D = 15
 
     y_bottom = -5
 
@@ -50,24 +51,31 @@ class RobotType(Enum):
     rectangle = 1
 
 
-
-
 class Config:
 
     def __init__(self):
         # robot parameter
-        self.max_speed = 3.0  # [m/s]
+        self.max_speed = 4.0  # [m/s]
         self.min_speed = -1.5  # [m/s]
-        self.max_yaw_rate = 40.0 * math.pi / 180.0  # [rad/s]
-        self.max_accel = 0.2  # [m/ss]
-        self.max_delta_yaw_rate = 40.0 * math.pi / 180.0  # [rad/ss]
+        self.max_yaw_rate = 60.0 * math.pi / 180.0  # [rad/s]
+        self.max_accel = 0.3  # [m/ss]
+        self.max_delta_yaw_rate = 60.0 * math.pi / 180.0  # [rad/ss]
         self.v_resolution = 0.01  # [m/s]
         self.yaw_rate_resolution = 0.1 * math.pi / 180.0  # [rad/s]
-        self.dt = 0.5  # [s] Time tick for motion prediction
+        self.dt = DT  # [s] Time tick for motion prediction
         self.predict_time = 3.0  # [s]
-        self.to_goal_cost_gain = 0.2
-        self.speed_cost_gain = 2.0
-        self.obstacle_cost_gain = 1.0
+
+
+        # (1)Change paremeters
+        #####
+        self.to_goal_cost_gain = 0.15
+        self.speed_cost_gain = 1.2
+        self.obstacle_cost_gain = 0.13
+        #####
+
+
+
+
         self.robot_stuck_flag_cons = 0.001  # constant to prevent robot stucked
         self.robot_type = RobotType.circle
 
@@ -225,6 +233,44 @@ def plot_arrow(x, y, yaw, length=0.5, width=0.1):  # pragma: no cover
     plt.plot(x, y)
 
 
+def plot_trajectory_data(trajectory):
+    x_data = [state[0] for state in trajectory]
+    y_data = [state[1] for state in trajectory]
+    yaw_data = [state[2] for state in trajectory]
+    v_data = [state[3] for state in trajectory]
+    omega_data = [state[4] for state in trajectory]
+
+    # Creating time data assuming constant dt between states
+    dt = DT  # Change this value to your actual dt
+    time_data = [i * dt for i in range(len(trajectory))]
+    fig, axs = plt.subplots(5, 1, figsize=(12, 6))  # 5 subplots for x, y, yaw, v, omega
+
+    axs[0].plot(time_data, x_data, label='X Position')
+    axs[0].set_xlabel('Time [s]')
+    axs[0].set_ylabel('X [m]')
+    axs[0].legend()
+
+    axs[1].plot(time_data, y_data, label='Y Position')
+    axs[1].set_xlabel('Time [s]')
+    axs[1].set_ylabel('Y [m]')
+    axs[1].legend()
+
+    axs[2].plot(time_data, [math.degrees(yaw) for yaw in yaw_data], label='Yaw Angle')
+    axs[2].set_xlabel('Time [s]')
+    axs[2].set_ylabel('Yaw [degrees]')
+    axs[2].legend()
+
+    axs[3].plot(time_data, v_data, label='Linear Velocity')
+    axs[3].set_xlabel('Time [s]')
+    axs[3].set_ylabel('Velocity [m/s]')
+    axs[3].legend()
+
+    axs[4].plot(time_data, [math.degrees(omega) for omega in omega_data], label='Angular Velocity')
+    axs[4].set_xlabel('Time [s]')
+    axs[4].set_ylabel('Angular Velocity [degrees/s]')
+    axs[4].legend()
+
+    plt.tight_layout()
 def plot_robot(x, y, yaw, config):  # pragma: no cover
     if config.robot_type == RobotType.rectangle:
         outline = np.array([[-config.robot_length / 2, config.robot_length / 2,
@@ -248,20 +294,32 @@ def plot_robot(x, y, yaw, config):  # pragma: no cover
         plt.plot([x, out_x], [y, out_y], "-k")
 
 
-def main(gx=0.2, gy=1.0, robot_type=RobotType.circle):
+def main(robot_type=RobotType.circle):
     print(__file__ + " start!!")
     # initial state [x(m), y(m), yaw(rad), v(m/s), omega(rad/s)]
-    x = np.array([0.0, -1, math.pi / 8.0, 0.0, 0.0])
-    # goal position [x(m), y(m)]
+    x = np.array([-0.9, -1, math.pi/2.0, 0.0, 0.0])
+   
+    # (2) Expeirment with different position [x(m), y(m)]
+    gx = 0.6
+    gy = 1.0
     goal = np.array([gx, gy])
-
-    # input [forward speed, yaw_rate]
 
     config.robot_type = robot_type
     trajectory = np.array(x)
     ob = config.ob
+
+    v_history = []
     while True:
         u, predicted_trajectory = dwa_control(x, config, goal, ob)
+
+        print("type of u", type(u))
+        print(u)
+
+        print("type of predicted_trajector", type(predicted_trajectory))
+        print(predicted_trajectory)
+        v_history.append(u)
+        np.transpose(np.array(v_history))
+
         x = motion(x, u, config.dt)  # simulate robot
         trajectory = np.vstack((trajectory, x))  # store state history
 
@@ -276,7 +334,6 @@ def main(gx=0.2, gy=1.0, robot_type=RobotType.circle):
             plt.plot(goal[0], goal[1], "xb")
 
             plt.plot(ob[:, 0], ob[:, 1], "ok", markersize=3)
-
             
             plot_robot(x[0], x[1], x[2], config)
             plot_arrow(x[0], x[1], x[2])
@@ -296,7 +353,12 @@ def main(gx=0.2, gy=1.0, robot_type=RobotType.circle):
     if show_animation:
         plt.plot(trajectory[:, 0], trajectory[:, 1], "-r")
         plt.pause(0.0001)
+
+        plot_trajectory_data(trajectory)
+
         plt.show()
+
+        
 
 
 if __name__ == '__main__':
