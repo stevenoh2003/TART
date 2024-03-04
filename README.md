@@ -18,6 +18,9 @@ This is a ROS-driven project on a smart shopping cart that addresses the ineffic
 
 # Nav2 usage
  This project uses the AMCL algorithm in the Nav2 stack.
- <img src="images/simulation.gif" alt="Alt text for the first image" width="400"/>
+ <div>
+    <img src="images/simulation.gif" alt="Alt text for the first image" width="400"/>
+
+ </div>
 
 
