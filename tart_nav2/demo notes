@@ -1,0 +1,33 @@
+###########DEMO1 LIDAR
+
+1. launch lidar node
+	ros2 run rplidar_ros rplidar_composition --ros-args -p serial_port:=/dev/rplidar -p serial_baudrate:=115200 -p frame_id:=laser_frame -p angle_compensate:=true -p scan_mode:=Standard
+
+	ros2 service call /stop_motor std_srvs/srv/Empty {}
+	
+	
+2. launch_sim
+3. rviz2 -d config/lidar_demo.rviz
+
+
+##########DEMO4 PATH PLANNING
+
+1. Launch gazebo
+
+ros2 launch articubot_one launch_sim.launch.py world:=./worlds/wall_market.world
+
+2. launch rviz
+3. launch twist mux
+
+ros2 run twist_mux twist_mux --ros-args --params-file ./config/twist_mux.yaml -r cmd_vel_out:=diff_cont/cmd_vel_unstamped
+
+4. launch localization
+
+ros2 launch nav2_bringup localization_launch.py map:=./complete_map.yaml use_sim_time:=true
+
+5. set initial pose using “estimated 2D pose” in map frame
+6. launch nav2
+
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true map_subscribe_transient_local:=true
+
+

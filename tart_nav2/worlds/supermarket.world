@@ -1,0 +1,182 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="supermarket_world">
+
+    <!-- Ground Plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Lighting -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Walls -->
+    <!-- North Wall -->
+    <model name="north_wall">
+      <static>true</static>
+      <pose>4 4.5 0 0 0 0</pose> <!-- Adjust the position as needed -->
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>8 0.1 2</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>8 0.1 2</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- South Wall -->
+    <model name="south_wall">
+      <static>true</static>
+      <pose>4 -0.5 0 0 0 0</pose> <!-- Adjust the position as needed -->
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>8 0.1 2</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>8 0.1 2</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- East Wall -->
+    <model name="east_wall">
+      <static>true</static>
+      <pose>7.5 2 0 0 0 1.57</pose> <!-- Rotated 90 degrees -->
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>5 0.1 2</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>5 0.1 2</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- West Wall -->
+    <model name="west_wall">
+      <static>true</static>
+      <pose>0.5 2 0 0 0 1.57</pose> <!-- Rotated 90 degrees -->
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>5 0.1 2</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>5 0.1 2</size></box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Shelves -->
+    <!-- Adjust the positions to ensure at least 40cm wide paths -->
+
+    <!-- First Column of Shelves -->
+    <!-- Shelf 1 -->
+    <model name="shelf1">
+      <static>true</static>
+      <pose>2 1 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Shelf 2 -->
+    <model name="shelf2">
+      <static>true</static>
+      <pose>2 3 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Second Column of Shelves -->
+    <!-- Shelf 3 -->
+    <model name="shelf3">
+      <static>true</static>
+      <pose>6 1 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Shelf 4 -->
+    <model name="shelf4">
+      <static>true</static>
+      <pose>6 3 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 0.1 2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
